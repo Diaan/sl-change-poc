@@ -26,17 +26,19 @@ export class MyElement extends ScopedElementsMixin(LitElement) {
   @state() mayChangeColumnProperties = false;
   @state() showExtraGroup = false;
 
-  private visibilityOptions: string[] = [];
+  @state () visibilityOptions: string[] = ['isVisibleForStudent'];
 
   render() {
     return html`
+    [${this.visibilityOptions}]
       <sl-form>
         <sl-form-field label="Who is allowed to see this column and the results in it?">
             <sl-checkbox-group
               name="visibility"
               .value=${this.visibilityOptions}
               @sl-change=${(event: CustomEvent<string[]>) => {
-                console.log('checkboxgroup', event);
+                this.visibilityOptions = event.detail;
+                console.log('checkboxgroup', event, this.visibilityOptions);
               }}
             >
               <sl-checkbox value="isVisibleForStudent">Parents and students</sl-checkbox>
@@ -72,7 +74,6 @@ export class MyElement extends ScopedElementsMixin(LitElement) {
               </sl-checkbox-group>
             </sl-form-field>
           </div>
-        </sl-form>
           `
         )}
 
