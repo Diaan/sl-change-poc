@@ -24,6 +24,7 @@ export class MyElement extends ScopedElementsMixin(LitElement) {
   }
 
   @state() mayChangeColumnProperties = false;
+  @state() showExtraGroup = false;
 
   private visibilityOptions: string[] = [];
 
@@ -35,7 +36,7 @@ export class MyElement extends ScopedElementsMixin(LitElement) {
               name="visibility"
               .value=${this.visibilityOptions}
               @sl-change=${(event: CustomEvent<string[]>) => {
-                console.log(event.detail);
+                console.log('checkboxgroup', event);
               }}
             >
               <sl-checkbox value="isVisibleForStudent">Parents and students</sl-checkbox>
@@ -48,15 +49,19 @@ export class MyElement extends ScopedElementsMixin(LitElement) {
           <sl-radio-group
             name="change-column-properties"
             .value=${this.mayChangeColumnProperties}
-            @sl-change=${(event: CustomEvent<boolean>) => (this.mayChangeColumnProperties = event.detail)}
+            @sl-change=${(event: CustomEvent<boolean>) => {
+              console.log('radio group', event);
+              // this.mayChangeColumnProperties = event.detail;
+            }}
           >
             <sl-radio .value=${false} checked>No</sl-radio>
             <sl-radio .value=${true}>Yes</sl-radio>
           </sl-radio-group>
         </sl-form-field>
+        <button @click=${() => (this.showExtraGroup = !this.showExtraGroup)}>toggle</button>
 
         ${when(
-          this.mayChangeColumnProperties,
+          this.showExtraGroup,
           () => html`
           <div class="edit-options">
             <sl-form-field label="Specify what can be changed:">
